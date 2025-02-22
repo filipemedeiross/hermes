@@ -42,7 +42,7 @@ class Content(models.Model):
     name  = models.CharField(max_length=255)
     genre = models.CharField(max_length=100)
     platform = models.CharField(max_length=50)
-    is_movie = models.BooleanField()
+    is_movie = models.BooleanField(default=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
