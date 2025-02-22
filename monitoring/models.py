@@ -1,22 +1,40 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 
 
 class User(models.Model):
     name = models.CharField(max_length=255)
-    date = models.DateField(auto_now_add=True)
+    signup = models.DateField(auto_now_add=True)
     height = models.DecimalField(max_digits=4, decimal_places=2)
     weight = models.DecimalField(max_digits=4, decimal_places=1)
+
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^[a-zA-Z][a-zA-Z0-9_]*$',
+                message='The username must start with a letter and contain only letters, numbers or underscores.'
+            )
+        ]
+    )
     password = models.CharField(max_length=128)
 
     def save(self, *args, **kwargs):
+        if not self.username:
+            last_user = User.objects.order_by('-id').first()
+            next_id   = last_user.id + 1 if last_user else 1
+
+            self.username = f'username{next_id}'
+
         if not self.password.startswith('pbkdf2_'):
             self.password = make_password(self.password)
 
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class Workout(models.Model):

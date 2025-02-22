@@ -6,7 +6,7 @@ from .models import User   , \
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'height', 'weight', 'date')
+    list_display = ('name', 'username', 'height', 'weight', 'signup')
 
 
 class WorkoutAdmin(admin.ModelAdmin):
