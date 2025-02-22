@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.timezone import now
 from django.contrib.auth.hashers import check_password
 
 from datetime   import date
@@ -9,26 +10,47 @@ from monitoring.models import User,    \
 
 class UserModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
+        self.user1 = User.objects.create(
             name='John',
             height=1.75,
             weight=70.5,
+            username='john_doe',
+            password='password',
+        )
+        self.user2 = User.objects.create(
+            name='Jane',
+            height=1.65,
+            weight=60.0,
             password='password'
         )
 
     def test_user_creation(self):
-        self.assertEqual(self.user.name, 'John')
-        self.assertEqual(self.user.date, date.today())
-        self.assertEqual(self.user.height, 1.75)
-        self.assertEqual(self.user.weight, 70.5)
+        self.assertEqual(self.user1.name, 'John')
+        self.assertEqual(self.user1.signup, now().date())
+        self.assertEqual(self.user1.height, 1.75)
+        self.assertEqual(self.user1.weight, 70.5)
+
+        self.assertEqual(self.user2.name, 'Jane')
+        self.assertEqual(self.user2.signup, now().date())
+        self.assertEqual(self.user2.height, 1.65)
+        self.assertEqual(self.user2.weight, 60.0)
 
     def test_password_is_hashed(self):
-        self.assertNotEqual(self.user.password, 'password')
-        self.assertTrue(self.user.password.startswith('pbkdf2_'))
-        self.assertTrue(check_password('password', self.user.password))
+        self.assertNotEqual(self.user1.password, 'password')
+        self.assertTrue(self.user1.password.startswith('pbkdf2_'))
+        self.assertTrue(check_password('password', self.user1.password))
+
+        self.assertNotEqual(self.user2.password, 'password')
+        self.assertTrue(self.user2.password.startswith('pbkdf2_'))
+        self.assertTrue(check_password('password', self.user2.password))
+
+    def test_username_assignment(self):
+        self.assertEqual(self.user1.username, 'john_doe')
+        self.assertEqual(self.user2.username, f'username{self.user2.id}')
 
     def test_str_representation(self):
-        self.assertEqual(str(self.user), 'John')
+        self.assertEqual(str(self.user1), 'john_doe')
+        self.assertEqual(str(self.user2), self.user2.username)
 
 
 class WorkoutModelTest(TestCase):
