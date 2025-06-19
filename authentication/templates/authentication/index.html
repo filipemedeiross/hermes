@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="icon" type="image/jpg" href="{% static 'img/hermes_favicon.jpg' %}">
+      <link rel="stylesheet" href="https://s3.apps.pm.pb.gov.br/portal-static/adminlte-3.1.0/plugins/fontawesome-free/css/all.min.css">
+      <link rel="stylesheet" href="https://s3.apps.pm.pb.gov.br/portal-static/adminlte-3.1.0/css/adminlte.min.css">
+
+      <title>Login | Hermes</title>
+  </head>
+  <body class="hold-transition login-page">
+    <div class="login-box">
+      <div class="card card-outline card-secondary">
+        <div class="card-header text-center">
+          <div class="text-center">
+            <img src="{% static 'img/hermes_logo.png' %}" alt="Logo Hermes"/>
+          </div>
+          <hr>
+          <a href="/" class="h1"><b>HERMES</b></a>
+        </div>
+        <div class="card-body">
+          <div class="social-auth-links text-center mt-2 mb-3">
+            <form method="GET" action="{% url 'login' %}">
+              <button type="submit" class="btn btn-block btn-primary">
+                <i class="fas fa-sign-in-alt mr-2"></i> Entrar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
