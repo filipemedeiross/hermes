@@ -64,7 +64,6 @@ class Analyst(AbstractUser):
                 code='invalid_registration'
             )
         ],
-        verbose_name=_("Registration Number")
     )
     rank = models.CharField(
         max_length=6,
